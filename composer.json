@@ -1,0 +1,18 @@
+{
+    "name": "yehua/auto-code",
+    "license": "apache-2.0",
+    "authors": [
+        {
+            "name": "叶华",
+            "email": "799475742@qq.com"
+        }
+    ],
+    "require": {
+        "nette/php-generator": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "AutoCode\\" : "src/"
+        }
+    }
+}
