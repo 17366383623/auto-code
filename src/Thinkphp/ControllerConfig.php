@@ -9,7 +9,7 @@ class ControllerConfig
     /**
      * @var string $controller_path
      */
-    private $controller_path;
+    private string $controller_path;
 
     /**
      * @param string $controllerPath

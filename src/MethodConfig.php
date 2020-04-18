@@ -4,16 +4,15 @@
 namespace AutoCode;
 
 use http\Exception\RuntimeException;
+use Nette\PhpGenerator\Parameter;
 use Nette\PhpGenerator\Type;
 
 class MethodConfig
 {
     /**
-     * property auth
+     * @var array $comment
      */
-    public const PUBLIC = 'public';
-    public const PRIVATE = 'private';
-    public const PROTECTED = 'protected';
+    private ?array $comment = [];
 
     /**
      * @var string $methodName
@@ -21,14 +20,14 @@ class MethodConfig
     private string $methodName;
 
     /**
-     * @var array $comment
-     */
-    private ?array $comment = [];
-
-    /**
      * @var bool $static
      */
     private bool $static = FALSE;
+
+    /**
+     * @var string $accessControl
+     */
+    private string $accessControl;
 
     /**
      * @var Type $returnType
@@ -59,19 +58,43 @@ class MethodConfig
     }
 
     /**
-     * @return string
-     */
-    public function getMethodName(): string
-    {
-        return $this->methodName;
-    }
-
-    /**
      * @param array $commentArr
      */
     public function setComment(array $commentArr): void
     {
         $this->comment = $commentArr;
+    }
+
+    /**
+     * @param string $body
+     */
+    public function setBody(string $body): void
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @param array $paramsArr
+     */
+    public function setParams(array $paramsArr): void
+    {
+        foreach ($paramsArr as $v){
+            if(!$v instanceof Parameter){
+                throw new RuntimeException("params must be instance of Nette\PhpGenerator\Parameter");
+            }
+        }
+        $this->params = $paramsArr;
+    }
+
+    /**
+     * @param string $accessControl
+     */
+    public function setAccessControl(string $accessControl): void
+    {
+        if(!in_array($accessControl, [self::PRIVATE, self::PROTECTED, self::PRIVATE])){
+            throw new RuntimeException("{$accessControl} must be public|private|protected");
+        }
+        $this->accessControl = $accessControl;
     }
 
     /**
@@ -91,14 +114,6 @@ class MethodConfig
     }
 
     /**
-     * @return Type
-     */
-    public function getReturnType(): Type
-    {
-        return $this->returnType;
-    }
-
-    /**
      * return is null
      */
     public function setReturnNullable(): void
@@ -112,6 +127,30 @@ class MethodConfig
     public function getReturnNullable(): bool
     {
         return (bool)$this->returnNullable;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getReturnType(): Type
+    {
+        return $this->returnType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessControl(): string
+    {
+        return $this->accessControl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName(): string
+    {
+        return $this->methodName;
     }
 
     /**
@@ -131,32 +170,11 @@ class MethodConfig
     }
 
     /**
-     * @param array $paramsArr
-     */
-    public function setParams(array $paramsArr): void
-    {
-        foreach ($paramsArr as $v){
-            if(!isset($v['param'], $v['type'])){
-                throw new RuntimeException('set method params error');
-            }
-        }
-        $this->params = $paramsArr;
-    }
-
-    /**
      * @return array
      */
     public function getParams(): array
     {
         return $this->params;
-    }
-
-    /**
-     * @param string $body
-     */
-    public function setBody(string $body): void
-    {
-        $this->body = $body;
     }
 
     /**

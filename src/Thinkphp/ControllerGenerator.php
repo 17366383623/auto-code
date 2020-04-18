@@ -19,11 +19,12 @@ class ControllerGenerator extends AbstractGenerator
      * ControllerGenerator constructor.
      * @param string $namespace
      * @param string $className
+     * @param array|null $useList
      * @param \AutoCode\Thinkphp\ControllerConfig|null $config
      */
-    public function __construct(string $namespace, string $className, ?ControllerConfig $config)
+    public function __construct(string $namespace, string $className, ?array $useList, ControllerConfig $config = NULL)
     {
-        parent::__construct($namespace, $className);
+        parent::__construct($namespace, $className, $useList);
         if($config){
             $this->setControllerConfig($config);
         }

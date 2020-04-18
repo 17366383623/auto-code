@@ -4,10 +4,16 @@
 namespace AutoCode;
 
 
+use http\Exception\RuntimeException;
 use Nette\PhpGenerator\Type;
 
 class PropertyConfig
 {
+    /**
+     * @var string $accessControl
+     */
+    private string $accessControl;
+
     /**
      * @var string $propertyName
      */
@@ -37,6 +43,25 @@ class PropertyConfig
      * @var array $comment
      */
     private ?array $comment = [];
+
+    /**
+     * @param string $control
+     */
+    public function setAccessControl(string $control): void
+    {
+        if(!in_array($control, [self::VISIBILITY_PRIVATE, self::VISIBILITY_PUBLIC, self::VISIBILITY_PROTECTED])){
+            throw new RuntimeException("access control is error : {$control}");
+        }
+        $this->accessControl = $control;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessControl(): string
+    {
+        return $this->accessControl;
+    }
 
     /**
      * @param string $name
