@@ -1,5 +1,5 @@
 <?php
-namespace AutoCode\Thinkphp;
+namespace AutoCode\Thinkphp\BaseModule;
 
 use AutoCode\AbstractGenerator;
 use AutoCode\Thinkphp\ControllerConfig;
@@ -44,5 +44,10 @@ class ControllerGenerator extends AbstractGenerator
     public function getControllerConfig():?ControllerConfig
     {
         return $this->controller_config;
+    }
+
+    public function controllerMethodGenerator()
+    {
+
     }
 }

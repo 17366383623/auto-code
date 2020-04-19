@@ -38,6 +38,14 @@ abstract class AbstractGenerator
     }
 
     /**
+     * @return ClassType
+     */
+    public function getClassType(): ClassType
+    {
+        return $this->class;
+    }
+
+    /**
      * create class Object
      *
      * @param string $namespace

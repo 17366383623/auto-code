@@ -1,7 +1,6 @@
 <?php
 
-
-namespace AutoCode\Thinkphp;
+namespace AutoCode\Thinkphp\BaseModule;
 
 
 class ControllerConfig
