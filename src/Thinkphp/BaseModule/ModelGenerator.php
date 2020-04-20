@@ -55,6 +55,9 @@ class ModelGenerator extends AbstractGenerator
      */
     public function createModelFile(Table $table): void
     {
+        // 获取表名
+        $tableName = lcfirst($table->getTableName());
+        // 创建属性
 
     }
 
