@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AutoCode\FileSystem;
+namespace AutoCode\Utility;
 use AutoCode\Instance;
 use http\Exception\RuntimeException;
 
@@ -29,8 +29,8 @@ class FileSystem
     public function createFile(string $path, string $fileName, string $body): bool
     {
         $real_path = realpath($path);
-        if(!is_dir($real_path)){
-            @mkdir($real_path);
+        if(!is_dir($real_path) && !mkdir($real_path) && !is_dir($real_path)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $real_path));
         }
         if(!is_dir($real_path)){
             throw new RuntimeException("{$real_path} is not a dir path");
