@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AutoCode\Thinkphp\DateBase;
+namespace AutoCode\DateBase;
 
 
 class ColumnType

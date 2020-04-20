@@ -11,7 +11,7 @@ use AutoCode\Thinkphp\ControllerConfig;
 class ControllerGenerator extends AbstractGenerator
 {
     /**
-     * @var \AutoCode\Thinkphp\ControllerConfig|null $controller_path
+     * @var ControllerConfig|null $controller_path
      */
     private ?ControllerConfig $controller_config;
 
@@ -20,7 +20,7 @@ class ControllerGenerator extends AbstractGenerator
      * @param string $namespace
      * @param string $className
      * @param array|null $useList
-     * @param \AutoCode\Thinkphp\ControllerConfig|null $config
+     * @param ControllerConfig|null $config
      */
     public function __construct(string $namespace, string $className, ?array $useList, ControllerConfig $config = NULL)
     {
@@ -31,7 +31,7 @@ class ControllerGenerator extends AbstractGenerator
     }
 
     /**
-     * @param \AutoCode\Thinkphp\ControllerConfig $config
+     * @param ControllerConfig $config
      */
     public function setControllerConfig(ControllerConfig $config):void
     {
@@ -39,7 +39,7 @@ class ControllerGenerator extends AbstractGenerator
     }
 
     /**
-     * @return \AutoCode\Thinkphp\ControllerConfig|null
+     * @return ControllerConfig|null
      */
     public function getControllerConfig():?ControllerConfig
     {

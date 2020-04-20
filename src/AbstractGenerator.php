@@ -12,9 +12,9 @@ use Nette\PhpGenerator\Property;
 abstract class AbstractGenerator
 {
     /**
-     * @var ClassType|null $class
+     * @var ClassType $class
      */
-    private ?ClassType $class;
+    private ClassType $class;
 
     /**
      * @var array|null
@@ -70,6 +70,30 @@ abstract class AbstractGenerator
             $namespaceObj->addUse($v);
         }
         return $namespaceObj;
+    }
+
+    /**
+     * @param string $extend
+     */
+    public function addExtend(string $extend): void
+    {
+        $this->class->addExtend($extend);
+    }
+
+    /**
+     * @param array $extendArr
+     */
+    public function setExtend(array $extendArr): void
+    {
+        $this->class->setExtends($extendArr);
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtends(): array
+    {
+        return $this->class->getExtends();
     }
 
     /**

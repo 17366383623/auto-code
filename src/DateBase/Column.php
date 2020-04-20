@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AutoCode\Thinkphp\DateBase;
+namespace AutoCode\DateBase;
 
 
 class Column
@@ -15,6 +15,11 @@ class Column
      * @var string $type
      */
     private string $type;
+
+    /**
+     * @var string $initType
+     */
+    private string $initType = 'string';
 
     /**
      * @var int $size
@@ -63,9 +68,36 @@ class Column
         return $this->size;
     }
 
+    /**
+     * @param string $type
+     */
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setInitType(string $type): void
+    {
+        $this->initType = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInitType(): string
+    {
+        return $this->initType;
     }
 
     /**

@@ -11,6 +11,11 @@ class ControllerConfig
     private string $controller_path;
 
     /**
+     * @var string $namespaceBase
+     */
+    private string $namespaceBase;
+
+    /**
      * @param string $controllerPath
      */
     public function setControllerPath(string $controllerPath): void
@@ -24,5 +29,21 @@ class ControllerConfig
     public function getControllerPath(): string
     {
         return $this->controller_path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespaceBase(): string
+    {
+        return $this->namespaceBase;
+    }
+
+    /**
+     * @param string $namespaceBase
+     */
+    public function setNamespaceBase(string $namespaceBase): void
+    {
+        $this->namespaceBase = $namespaceBase;
     }
 }
