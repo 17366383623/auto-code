@@ -4,6 +4,8 @@
 namespace AutoCode\DateBase;
 
 
+use Nette\PhpGenerator\Type;
+
 class Column
 {
     /**
@@ -17,9 +19,14 @@ class Column
     private string $type;
 
     /**
-     * @var string $initType
+     * @var string $phpType
      */
-    private string $initType = 'string';
+    private string $phpType;
+
+    /**
+     * @var bool $initType
+     */
+    private bool $serialize = false;
 
     /**
      * @var int $size
@@ -29,12 +36,17 @@ class Column
     /**
      * @var bool $isNullable
      */
-    private bool $isNullable;
+    private bool $isNullable = FALSE;
 
     /**
-     * @var string $comment
+     * @var array $comment
      */
-    private string $comment;
+    private array $comment = [];
+
+    /**
+     * @var string $defaultValue
+     */
+    private string $defaultValue;
 
     /**
      * @param string $name
@@ -50,6 +62,22 @@ class Column
     public function getColumnName(): string
     {
         return $this->columnName;
+    }
+
+    /**
+     * @param string $defaultValue
+     */
+    public function setDefaultValue(string $defaultValue): void
+    {
+        $this->defaultValue = $defaultValue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultValue(): string
+    {
+        return $this->defaultValue;
     }
 
     /**
@@ -77,7 +105,7 @@ class Column
     }
 
     /**
-     * @return string
+     * @return ColumnType
      */
     public function getType(): string
     {
@@ -87,17 +115,33 @@ class Column
     /**
      * @param string $type
      */
-    public function setInitType(string $type): void
+    public function setPhpType(string $type):void
     {
-        $this->initType = $type;
+        $this->phpType = $type;
     }
 
     /**
      * @return string
      */
-    public function getInitType(): string
+    public function getPhpType(): string
     {
-        return $this->initType;
+        return $this->phpType;
+    }
+
+    /**
+     * @param bool $serialize
+     */
+    public function setSerialize(bool $serialize): void
+    {
+        $this->serialize = $serialize;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSerialize(): bool
+    {
+        return $this->serialize;
     }
 
     /**
@@ -117,17 +161,17 @@ class Column
     }
 
     /**
-     * @param string $comment
+     * @param array $comment
      */
-    public function setComment(string $comment): void
+    public function setComment(array $comment): void
     {
-        return $this->comment;
+        $this->comment = $comment;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getComment(): string
+    public function getComment(): array
     {
         return $this->comment;
     }

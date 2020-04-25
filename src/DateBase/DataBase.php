@@ -14,6 +14,16 @@ class DataBase
     private string $name;
 
     /**
+     * @var string $path
+     */
+    private string $path;
+
+    /**
+     * @var string $modelNamespace
+     */
+    private string $modelNamespace;
+
+    /**
      * @var array|null $tables
      */
     private ?array $tables;
@@ -32,6 +42,43 @@ class DataBase
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     * @throws \Exception
+     */
+    public function setPath(string $path): void
+    {
+        $path = realpath($path);
+        if(!is_dir($path)){
+            throw new \Exception("{$path} : is not a path");
+        }
+        $this->path = $path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelNamespace(): string
+    {
+        return $this->modelNamespace;
+    }
+
+    /**
+     * @param string $namespace
+     */
+    public function setModelNamespace(string $namespace): void
+    {
+        $this->modelNamespace = $namespace;
     }
 
     /**

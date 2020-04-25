@@ -19,6 +19,21 @@ class Table
     private string $tableName;
 
     /**
+     * @var string $autoWriteTimestamp
+     */
+    private string $autoWriteTimestamp = '';
+
+    /**
+     * @var array $readonly
+     */
+    private array $readonly = [];
+
+    /**
+     * @var string $softDelete
+     */
+    private string $softDelete = '';
+
+    /**
      * @return string
      */
     public function getTableName(): string
@@ -31,7 +46,7 @@ class Table
      */
     public function setTableName(string $name): void
     {
-        $this->tableName = $name;
+        $this->tableName = ucfirst($name);
     }
 
     /**
@@ -53,6 +68,54 @@ class Table
             }
         }
         $this->columns = $column;
+    }
+
+    /**
+     * getAutoWriteTimestamp
+     */
+    public function getAutoWriteTimestamp(): string
+    {
+        return $this->autoWriteTimestamp;
+    }
+
+    /**
+     * @param string $autoWriteTimestamp
+     */
+    public function setAutoWriteTimestamp(string $autoWriteTimestamp): void
+    {
+        $this->autoWriteTimestamp = $autoWriteTimestamp;
+    }
+
+    /**
+     * @return array
+     */
+    public function getReadonly(): array
+    {
+        return (bool)$this->readonly?$this->readonly:[];
+    }
+
+    /**
+     * @param array $readonly
+     */
+    public function setReadonly(array $readonly):void
+    {
+        $this->readonly = $readonly;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSoftDelete():string
+    {
+        return $this->softDelete;
+    }
+
+    /**
+     * @param string $softDelete
+     */
+    public function setSoftDelete(string $softDelete): void
+    {
+        $this->softDelete = $softDelete;
     }
 
     /**

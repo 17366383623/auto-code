@@ -1,8 +1,7 @@
 <?php
 
 
-namespace AutoCode\Thinkphp;
-
+namespace AutoCode;
 
 class AccessControlType
 {

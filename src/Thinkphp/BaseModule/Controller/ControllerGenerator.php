@@ -1,5 +1,5 @@
 <?php
-namespace AutoCode\Thinkphp\BaseModule;
+namespace AutoCode\Thinkphp\BaseModule\Controller;
 
 use AutoCode\AbstractGenerator;
 use AutoCode\Thinkphp\ControllerConfig;

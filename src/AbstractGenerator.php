@@ -17,14 +17,19 @@ abstract class AbstractGenerator
     private ClassType $class;
 
     /**
-     * @var array|null
+     * @var array
      */
-    private ?array $propertyList;
+    private array $propertyList = [];
 
     /**
      * @var array|null
      */
     private ?array $methodList;
+
+    /**
+     * @var PhpNamespace $namespace
+     */
+    private PhpNamespace $namespace;
 
     /**
      * AbstractGenerator constructor.
@@ -46,6 +51,24 @@ abstract class AbstractGenerator
     }
 
     /**
+     * @param array $comment
+     */
+    public function setClassComment(array $comment): void
+    {
+        foreach ($comment as $com){
+            $this->class->addComment($com);
+        }
+    }
+
+    /**
+     * @param ClassType $class
+     */
+    public function setClassType(ClassType $class): void
+    {
+        $this->class = $class;
+    }
+
+    /**
      * create class Object
      *
      * @param string $namespace
@@ -56,7 +79,8 @@ abstract class AbstractGenerator
     {
         $namespaceObj = new \Nette\PhpGenerator\PhpNamespace($namespace);
         $namespaceObj = $this->addUse($namespaceObj, $useList);
-        $this->class = new ClassType($className, $namespaceObj);
+        $this->namespace = $namespaceObj;
+        $this->class = $namespaceObj->addClass($className);
     }
 
     /**
@@ -109,11 +133,9 @@ abstract class AbstractGenerator
      */
     public function addTrait(array $traitList): void
     {
-        $class = $this->class;
         foreach ($traitList as $v){
-            $class->addTrait($v);
+            $this->class->addTrait($v);
         }
-        $this->class = $class;
     }
 
     /**
@@ -314,5 +336,16 @@ abstract class AbstractGenerator
         }
         $class->setMethods($container);
         $this->class = $class;
+    }
+
+    /**
+     * @return string
+     */
+    public function dump(): string
+    {
+        ob_start();
+        echo (new \Nette\PhpGenerator\PsrPrinter)->printNamespace($this->namespace);
+        $content = ob_get_clean();
+        return '<?php'.PHP_EOL.$content;
     }
 }

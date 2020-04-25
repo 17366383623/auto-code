@@ -7,31 +7,31 @@ namespace AutoCode;
 trait Instance
 {
     /**
-     * @var self |Instance
+     * @var $class
      */
-    private self $class;
+    private static $class = '';
 
     /**
      * Instance constructor.
      */
     private function __construct()
     {
-        $this->class = new self();
+        self::$class = new self();
     }
 
     /**
      * @return $this
      */
-    public function getInstance():self
+    public static function getInstance():self
     {
-        if($this->class!==null && $this->class instanceof self){
-            return $this->class;
+        if(self::$class!==null && self::$class instanceof self){
+            return self::$class;
         }
         $class = new self();
-        $this->class = $class;
+        self::$class = $class;
         $methodArr = get_class_methods(__FUNCTION__);
         if(in_array('init', $methodArr)){
-            $this->init();
+            self::init();
         }
     }
 }

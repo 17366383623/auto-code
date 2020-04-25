@@ -6,17 +6,25 @@ namespace AutoCode\DateBase;
 
 class ColumnType
 {
-    public const TINYINT = 'tinyint';
+    public const TINYINT = 'TINYINT';
 
-    public const INT = 'int';
+    public const SMALLINT = 'SMALLINT';
 
-    public const VARCHAR = 'varchar';
+    public const INT = 'INT';
 
-    public const DATE = 'date';
+    public const FLOAT = 'FLOAT';
 
-    public const DATETIME = 'datetime';
+    public const DOUBLE = 'DOUBLE';
 
-    public const TIMESTAMP = 'timestamp';
+    public const CHAR = 'CHAR';
 
-    public const TEXT = 'text';
+    public const VARCHAR = 'VARCHAR';
+
+    public const TEXT = 'TEXT';
+
+    public const DATE = 'DATE';
+
+    public const DATETIME = 'DATETIME';
+
+    public const TIMESTAMP = 'TIMESTAMP';
 }
