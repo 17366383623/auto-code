@@ -12,7 +12,7 @@ class MethodConfig
     /**
      * @var array $comment
      */
-    private ?array $comment = [];
+    private array $comment = [];
 
     /**
      * @var string $methodName
@@ -27,12 +27,12 @@ class MethodConfig
     /**
      * @var string $accessControl
      */
-    private string $accessControl;
+    private string $accessControl = 'public';
 
     /**
-     * @var Type $returnType
+     * @var string $returnType
      */
-    private Type $returnType;
+    private string $returnType = '';
 
     /**
      * @var bool $returnNullable
@@ -47,7 +47,16 @@ class MethodConfig
     /**
      * @var string $body
      */
-    private string $body;
+    private string $body = '';
+
+    /**
+     * MethodConfig constructor.
+     * @param string $name
+     */
+    public function __construct(string $name)
+    {
+        $this->setMethodName($name);
+    }
 
     /**
      * @param string $methodName
@@ -106,9 +115,9 @@ class MethodConfig
     }
 
     /**
-     * @param Type $type
+     * @param string $type
      */
-    public function setReturnType(Type $type): void
+    public function setReturnType(string $type): void
     {
         $this->returnType = $type;
     }
@@ -130,9 +139,9 @@ class MethodConfig
     }
 
     /**
-     * @return Type
+     * @return string
      */
-    public function getReturnType(): Type
+    public function getReturnType(): string
     {
         return $this->returnType;
     }

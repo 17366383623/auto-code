@@ -4,19 +4,30 @@
 namespace AutoCode\DateBase;
 
 
+use AutoCode\Utility\FileSystem;
 use http\Exception\RuntimeException;
 
 class Table
 {
     /**
-     * @var array|null $columns
+     * @var array $columns
      */
-    private ?array $columns;
+    private array $columns = [];
 
     /**
      * @var string $tableName
      */
     private string $tableName;
+
+    /**
+     * @var string $namespace
+     */
+    private string $namespace;
+
+    /**
+     * @var string $path
+     */
+    private string $path;
 
     /**
      * @var string $autoWriteTimestamp
@@ -32,6 +43,48 @@ class Table
      * @var string $softDelete
      */
     private string $softDelete = '';
+
+    /**
+     * @var int $cache
+     */
+    private int $cache = 0;
+
+    /**
+     * @var string $eventPath
+     */
+    private string $eventPath = '';
+
+    /**
+     * @var string $eventNamespace
+     */
+    private string $eventNamespace;
+
+    /**
+     * @var array $event
+     */
+    private array $event = [
+        'before_insert' => '',
+        'after_insert' => '',
+        'before_update' => '',
+        'after_update' => '',
+        'before_write' => '',
+        'after_write' => '',
+        'before_delete' => '',
+        'after_delete' => ''
+    ];
+
+    /**
+     * Table constructor.
+     * @param string $name
+     * @param string $namespace
+     * @param string $path
+     */
+    public function __construct(string $name, string $namespace, string $path)
+    {
+        $this->setTableName($name);
+        $this->setNamespace($namespace);
+        $this->setPath($path);
+    }
 
     /**
      * @return string
@@ -50,9 +103,123 @@ class Table
     }
 
     /**
-     * @return array|null
+     * @return string
      */
-    public function getColumn(): ?array
+    public function getEventPath(): string
+    {
+        return $this->eventPath;
+    }
+
+    /**
+     * @param string $eventPath
+     */
+    public function setEventPath(string $eventPath): void
+    {
+        if($eventPath === ''){
+            $this->eventPath = '';
+            return;
+        }
+        $eventPath = realpath($eventPath);
+        if(!is_dir($eventPath))throw new RuntimeException("{$eventPath} is not dir path");
+        $this->eventPath = $eventPath;
+    }
+
+    /**
+     * @return sting
+     */
+    public function getEventNamespace(): sting
+    {
+        return $this->eventNamespace;
+    }
+
+    /**
+     * @param string $namespace
+     */
+    public function setEventNamespace(string $namespace): void
+    {
+        $this->eventNamespace = $namespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace(): string
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * @param string $namespace
+     */
+    public function setNamespace(string $namespace): void
+    {
+        if(!$namespace)throw new RuntimeException("{$namespace} is null");
+        $this->namespace = $namespace;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCache(): int
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param int $cacheTime
+     */
+    public function setCache(int $cacheTime): void
+    {
+        $this->cache = $cacheTime;
+    }
+
+    /**
+     * @param bool $filter
+     * @return array
+     */
+    public function getEvent(bool $filter = TRUE): array
+    {
+        if($filter){
+            return array_filter($this->event, function($e){
+                if($e)return $e;
+            });
+        }
+        return $this->event;
+    }
+
+    /**
+     * @param string $name
+     * @param string $className
+     * @param string $func
+     */
+    public function setEvent(string $name, string $className, string $func): void
+    {
+        if(!isset($this->event[$name]))throw new RuntimeException("{$name} is not exist in event array");
+        $this->event[$name] = $className.'::'.$func.'($column)';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath(string $path): void
+    {
+        $path = realpath($path);
+        if(!is_dir($path))throw new RuntimeException("{$path} is not dir path");
+        $this->path = $path;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumn(): array
     {
         return $this->columns;
     }

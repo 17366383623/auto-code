@@ -3,7 +3,6 @@
 
 namespace AutoCode\Thinkphp\BaseModule\Entity;
 
-
 use AutoCode\AbstractGenerator;
 use AutoCode\DateBase\Column;
 use AutoCode\DateBase\DataBase;
@@ -17,24 +16,47 @@ use http\Exception\RuntimeException;
 use Nette\PhpGenerator\Parameter;
 use Nette\PhpGenerator\Type;
 
+/**
+ * Class ModelGenerator
+ * @package AutoCode\Thinkphp\BaseModule\Entity
+ */
 class ModelGenerator extends AbstractGenerator
 {
     /**
-     * @var array|null
+     * @var Table $table
      */
-    private ?array $useList = [];
+    private Table $table;
+
+    /**
+     * @var array
+     */
+    private array $useList = [];
 
     /**
      * ModelGenerator constructor.
-     * @param string $path
-     * @param string $namespace
      * @param Table $table
      */
-    public function __construct(string $path, string $namespace, Table $table)
+    public function __construct(Table $table)
     {
-        parent::__construct($namespace, $table->getTableName(), $this->getUseList());
+        parent::__construct($table->getNamespace(), $table->getTableName(), $this->getUseList());
         $this->addExtend('think\Model');
-        $this->createModelFile($table, $path);
+        $this->setTable($table);
+    }
+
+    /**
+     * @param Table $table
+     */
+    public function setTable(Table $table): void
+    {
+        $this->table = $table;
+    }
+
+    /**
+     * @return Table
+     */
+    public function getTable(): Table
+    {
+        return $this->table;
     }
 
     /**
@@ -46,18 +68,16 @@ class ModelGenerator extends AbstractGenerator
     }
 
     /**
-     * @param Table $table
-     * @param string $path
+     * create model file
      */
-    protected function createModelFile(Table $table, string $path): void
+    protected function createModelFile(): void
     {
-        // 获取表名
-        $tableName = ucfirst($table->getTableName());
+        // 获取表对象
+        $table = $this->table;
         // 创建类备注
         $this->setClassComment([
-            $table->getTableName(),
-            ' ',
-            'Entity: '.StringHelper::snake($table->getTableName())
+            'class '.StringHelper::snake($table->getTableName()),
+            '@package '.$table->getNamespace()
         ]);
         // 创建元素
         foreach ($table->getColumn() as $col){
@@ -78,7 +98,7 @@ class ModelGenerator extends AbstractGenerator
         if($softDelete = $table->getSoftDelete()){
             $this->setSoftDelete($softDelete);
         }
-        FileSystem::createPhpFile($path, $tableName, $this->dump());
+        FileSystem::createPhpFile($table->getPath(), ucfirst($table->getTableName()), $this->dump());
     }
 
     /**
@@ -110,7 +130,9 @@ class ModelGenerator extends AbstractGenerator
     {
         $property = new PropertyConfig();
         $property->setComment([
-            'auto timestamp'
+            'auto timestamp',
+            ' ',
+            '@var string'
         ]);
         $property->setPropertyName('autoWriteTimestamp');
         $property->setAccessControl(AccessControlType::PROTECTED);

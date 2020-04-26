@@ -23,15 +23,15 @@ class Column
      */
     private string $phpType;
 
-    /**
-     * @var bool $initType
-     */
-    private bool $serialize = false;
+//    /**
+//     * @var bool $initType
+//     */
+//    private bool $serialize = false;
 
     /**
      * @var int $size
      */
-    private int $size;
+    private int $size = 50;
 
     /**
      * @var bool $isNullable
@@ -47,6 +47,20 @@ class Column
      * @var string $defaultValue
      */
     private string $defaultValue;
+
+
+    /**
+     * Column constructor.
+     * @param string $name
+     * @param string $phpType
+     * @param string $type
+     */
+    public function __construct(string $name, string $phpType, string $type)
+    {
+        $this->setColumnName($name);
+        $this->setPhpType($phpType);
+        $this->setType($type);
+    }
 
     /**
      * @param string $name
@@ -128,21 +142,21 @@ class Column
         return $this->phpType;
     }
 
-    /**
-     * @param bool $serialize
-     */
-    public function setSerialize(bool $serialize): void
-    {
-        $this->serialize = $serialize;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getSerialize(): bool
-    {
-        return $this->serialize;
-    }
+//    /**
+//     * @param bool $serialize
+//     */
+//    public function setSerialize(bool $serialize): void
+//    {
+//        $this->serialize = $serialize;
+//    }
+//
+//    /**
+//     * @return bool
+//     */
+//    public function getSerialize(): bool
+//    {
+//        return $this->serialize;
+//    }
 
     /**
      * @param bool $isNullable
@@ -161,18 +175,22 @@ class Column
     }
 
     /**
-     * @param array $comment
+     * @param string $comment
      */
-    public function setComment(array $comment): void
+    public function setComment(string $comment): void
     {
-        $this->comment = $comment;
+        $commentArr = [];
+        $commentArr[] = $comment;
+        $commentArr[] = ' ';
+        $commentArr[] = '@var '.$this->getPhpType();
+        $this->comment = $commentArr;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getComment(): array
+    public function getComment(): string
     {
-        return $this->comment;
+        return $this->comment[0]??'';
     }
 }

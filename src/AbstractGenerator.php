@@ -37,7 +37,7 @@ abstract class AbstractGenerator
      * @param string $className
      * @param array $useList
      */
-    public function __construct(string $namespace, string $className, ?array $useList)
+    public function __construct(string $namespace, string $className, array $useList = [])
     {
         $this->createClass($namespace, $className, $useList);
     }
