@@ -63,14 +63,14 @@ class Table
      * @var array $event
      */
     private array $event = [
-        'before_insert' => '',
-        'after_insert' => '',
-        'before_update' => '',
-        'after_update' => '',
-        'before_write' => '',
-        'after_write' => '',
-        'before_delete' => '',
-        'after_delete' => ''
+        'before_insert',
+        'after_insert',
+        'before_update',
+        'after_update',
+        'before_write',
+        'after_write',
+        'before_delete',
+        'after_delete'
     ];
 
     /**
@@ -125,9 +125,9 @@ class Table
     }
 
     /**
-     * @return sting
+     * @return string
      */
-    public function getEventNamespace(): sting
+    public function getEventNamespace(): string
     {
         return $this->eventNamespace;
     }
@@ -177,25 +177,17 @@ class Table
      * @param bool $filter
      * @return array
      */
-    public function getEvent(bool $filter = TRUE): array
+    public function getEvent(): array
     {
-        if($filter){
-            return array_filter($this->event, function($e){
-                if($e)return $e;
-            });
-        }
         return $this->event;
     }
 
     /**
-     * @param string $name
-     * @param string $className
-     * @param string $func
+     * @param array $event
      */
-    public function setEvent(string $name, string $className, string $func): void
+    public function setEvent(array $event): void
     {
-        if(!isset($this->event[$name]))throw new RuntimeException("{$name} is not exist in event array");
-        $this->event[$name] = $className.'::'.$func.'($column)';
+        $this->event = $event;
     }
 
     /**

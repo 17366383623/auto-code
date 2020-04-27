@@ -97,11 +97,12 @@ class MethodConfig
 
     /**
      * @param string $accessControl
+     * @throws \Exception
      */
     public function setAccessControl(string $accessControl): void
     {
-        if(!in_array($accessControl, [self::PRIVATE, self::PROTECTED, self::PRIVATE])){
-            throw new RuntimeException("{$accessControl} must be public|private|protected");
+        if(!in_array($accessControl, [(string)AccessControlType::PUBLIC, (string)AccessControlType::PROTECTED, (string)AccessControlType::PRIVATE])){
+            throw new \Exception("{$accessControl} must be public|private|protected");
         }
         $this->accessControl = $accessControl;
     }

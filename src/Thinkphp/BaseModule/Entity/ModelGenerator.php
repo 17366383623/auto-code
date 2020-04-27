@@ -8,6 +8,7 @@ use AutoCode\DateBase\Column;
 use AutoCode\DateBase\DataBase;
 use AutoCode\DateBase\Table;
 use AutoCode\MethodConfig;
+use AutoCode\PhpType;
 use AutoCode\PropertyConfig;
 use AutoCode\AccessControlType;
 use AutoCode\Utility\FileSystem;
@@ -70,7 +71,7 @@ class ModelGenerator extends AbstractGenerator
     /**
      * create model file
      */
-    protected function createModelFile(): void
+    public function createModelFile(): void
     {
         // 获取表对象
         $table = $this->table;
@@ -98,6 +99,8 @@ class ModelGenerator extends AbstractGenerator
         if($softDelete = $table->getSoftDelete()){
             $this->setSoftDelete($softDelete);
         }
+        // 创建事件
+        $this->createEventMethod($this->table->getEvent());
         FileSystem::createPhpFile($table->getPath(), ucfirst($table->getTableName()), $this->dump());
     }
 
@@ -183,7 +186,7 @@ class ModelGenerator extends AbstractGenerator
     {
         $property = new PropertyConfig();
         $property->setPropertyName($column->getColumnName());
-        $property->setComment($column->getComment());
+        $property->setComment([$column->getComment()]);
         $property->setAccessControl(\AutoCode\AccessControlType::PUBLIC);
         $property->setType($column->getPhpType());
         if($column->getIsNullable()){
@@ -193,5 +196,27 @@ class ModelGenerator extends AbstractGenerator
             $property->setValue($column->getDefaultValue());
         }
         $this->addProperty($property);
+    }
+
+    /**
+     * @param array $eventList
+     * @throws \Exception
+     */
+    protected function createEventMethod(array $eventList):void
+    {
+        $method = new MethodConfig('init');
+        $method->setStatic();
+        $method->setAccessControl(AccessControlType::PROTECTED);
+        $method->setComment([
+            'event config',
+            ' ',
+            '@return void'
+        ]);
+        $bodyStr = '';
+        foreach ($eventList as $v){
+            $bodyStr .= 'self::'.StringHelper::camel($eventList).'(\\'.$this->table->getEventNamespace().'\\'.StringHelper::camel($this->table->getTableName()).'Event::'.ucfirst(StringHelper::camel($eventList)).');'.PHP_EOL;
+        }
+        $method->setBody($bodyStr);
+        $this->addMethod($method);
     }
 }

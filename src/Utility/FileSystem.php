@@ -7,21 +7,6 @@ use http\Exception\RuntimeException;
 
 class FileSystem
 {
-    use Instance;
-
-    /**
-     * init
-     */
-    private static function init():void
-    {
-        var_dump('1111');
-        ini_set('allow_url_fopen',1);
-        ini_set('user_agent', NULL);
-        ini_set('default_socket_timeout', '60');
-        ini_set('auto_detect_line_endings', '0');
-        ini_set('memory_limit', '512');
-    }
-
     /**
      * @param string $path
      * @param string $fileName
@@ -37,7 +22,7 @@ class FileSystem
         if(!is_dir($real_path)){
             throw new RuntimeException("{$real_path} is not a dir path");
         }
-        return (bool)file_put_contents($real_path.$fileName, $body);
+        return (bool)file_put_contents($path.'/'.ucfirst($fileName), $body);
     }
 
 
@@ -52,6 +37,7 @@ class FileSystem
         if(substr($fileName, 0, -4) !== '.php'){
             $fileName.='.php';
         }
+        var_dump($fileName);
         return self::createFile($path, $fileName, $body);
     }
 }
