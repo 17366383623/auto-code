@@ -14,22 +14,22 @@ abstract class AbstractGenerator
     /**
      * @var ClassType $class
      */
-    private ClassType $class;
+    private $class;
 
     /**
      * @var array
      */
-    private array $propertyList = [];
+    private $propertyList = [];
 
     /**
      * @var array|null
      */
-    private ?array $methodList;
+    private $methodList;
 
     /**
      * @var PhpNamespace $namespace
      */
-    private PhpNamespace $namespace;
+    private $namespace;
 
     /**
      * AbstractGenerator constructor.

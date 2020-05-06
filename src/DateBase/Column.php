@@ -11,42 +11,42 @@ class Column
     /**
      * @var string $columnName
      */
-    private string $columnName;
+    private $columnName;
 
     /**
      * @var string $type
      */
-    private string $type;
+    private $type;
 
     /**
      * @var string $phpType
      */
-    private string $phpType;
+    private $phpType;
 
-//    /**
-//     * @var bool $initType
-//     */
-//    private bool $serialize = false;
+   /**
+    * @var bool $primary
+    */
+   private $primary = false;
 
     /**
      * @var int $size
      */
-    private int $size = 50;
+    private $size = 50;
 
     /**
      * @var bool $isNullable
      */
-    private bool $isNullable = FALSE;
+    private $isNullable = FALSE;
 
     /**
      * @var array $comment
      */
-    private array $comment = [];
+    private $comment = [];
 
     /**
      * @var string $defaultValue
      */
-    private string $defaultValue;
+    private $defaultValue;
 
 
     /**
@@ -142,21 +142,21 @@ class Column
         return $this->phpType;
     }
 
-//    /**
-//     * @param bool $serialize
-//     */
-//    public function setSerialize(bool $serialize): void
-//    {
-//        $this->serialize = $serialize;
-//    }
-//
-//    /**
-//     * @return bool
-//     */
-//    public function getSerialize(): bool
-//    {
-//        return $this->serialize;
-//    }
+    /**
+     * @return bool
+     */
+    public function isPrimary(): bool
+    {
+        return $this->primary;
+    }
+
+    /**
+     * @param bool $primary
+     */
+    public function setPrimary(bool $primary = TRUE): void
+    {
+        $this->primary = $primary;
+    }
 
     /**
      * @param bool $isNullable
@@ -187,10 +187,10 @@ class Column
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getComment(): string
+    public function getComment(): array
     {
-        return $this->comment[0]??'';
+        return $this->comment;
     }
 }

@@ -11,22 +11,36 @@ class DataBase
     /**
      * @var string $name
      */
-    private string $name;
+    private $name;
 
     /**
-     * @var string $path
+     * @var string $engine
      */
-    private string $path;
+    private $engine = 'Innodb';
 
     /**
-     * @var string $modelNamespace
+     * @var string $comment
      */
-    private string $modelNamespace;
+    private $comment = '';
 
     /**
-     * @var array|null $tables
+     * @var string $prefix
      */
-    private ?array $tables;
+    private $prefix = '';
+
+    /**
+     * @var array $tables
+     */
+    private $tables = [];
+
+    /**
+     * DataBase constructor.
+     * @param string $name
+     */
+    public function __construct(string $name)
+    {
+        $this->setName($name);
+    }
 
     /**
      * @return string
@@ -47,44 +61,23 @@ class DataBase
     /**
      * @return string
      */
-    public function getPath(): string
+    public function getEngine(): string
     {
-        return $this->path;
+        return $this->engine;
     }
 
     /**
-     * @param string $path
-     * @throws \Exception
+     * @param string $engine
      */
-    public function setPath(string $path): void
+    public function setEngine(string $engine): void
     {
-        $path = realpath($path);
-        if(!is_dir($path)){
-            throw new \Exception("{$path} : is not a path");
-        }
-        $this->path = $path;
+        $this->engine = $engine;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getModelNamespace(): string
-    {
-        return $this->modelNamespace;
-    }
-
-    /**
-     * @param string $namespace
-     */
-    public function setModelNamespace(string $namespace): void
-    {
-        $this->modelNamespace = $namespace;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getTables(): ?array
+    public function getTables(): array
     {
         return $this->tables;
     }
@@ -128,5 +121,37 @@ class DataBase
             throw new RuntimeException("table {$name} is not exist");
         }
         unset($this->tables[$name]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix(string $prefix): void
+    {
+        $this->prefix = $prefix;
     }
 }

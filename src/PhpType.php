@@ -8,13 +8,15 @@ class PhpType
 {
     public const
         STRING = 'string',
-        INTEGER = 'integer',
+        INTEGER = 'int',
         FLOAT = 'float',
-        BOOLEAN = 'boolean',
+        BOOLEAN = 'bool',
         ARRAY = 'array',
         OBJECT = 'object',
         SERIALIZE = 'serialize',
         JSON = 'json',
         TIMESTAMP = 'timestamp',
-        DATETIME = 'datetime';
+        DATETIME = 'datetime',
+        VOID = 'void',
+        NULL = 'null';
 }

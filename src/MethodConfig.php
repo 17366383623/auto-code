@@ -12,42 +12,42 @@ class MethodConfig
     /**
      * @var array $comment
      */
-    private array $comment = [];
+    private $comment = [];
 
     /**
      * @var string $methodName
      */
-    private string $methodName;
+    private $methodName;
 
     /**
      * @var bool $static
      */
-    private bool $static = FALSE;
+    private $static = FALSE;
 
     /**
      * @var string $accessControl
      */
-    private string $accessControl = 'public';
+    private $accessControl = 'public';
 
     /**
      * @var string $returnType
      */
-    private string $returnType = '';
+    private $returnType = '';
 
     /**
      * @var bool $returnNullable
      */
-    private bool $returnNullable = FALSE;
+    private $returnNullable = FALSE;
 
     /**
      * @var array $params
      */
-    private ?array $params = [];
+    private $params = [];
 
     /**
      * @var string $body
      */
-    private string $body = '';
+    private $body = '';
 
     /**
      * MethodConfig constructor.

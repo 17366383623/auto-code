@@ -8,11 +8,13 @@
         }
     ],
     "require": {
-        "nette/php-generator": "^3.3"
+        "nette/php-generator": "^3.3",
+        "gmars/tp5-rbac": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "AutoCode\\" : "src/"
+            "AutoCode\\" : "src/",
+            "Test\\": "test/"
         }
     }
 }

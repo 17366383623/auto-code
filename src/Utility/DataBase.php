@@ -15,13 +15,13 @@ class DataBase
      */
     public static function DataBaseTypeToPhpType(string $type): string
     {
-        if(in_array($type, [ColumnType::CHAR, ColumnType::VARCHAR, ColumnType::TEXT, ColumnType::DATE, ColumnType::DATETIME, ColumnType::TIMESTAMP])){
+        if(in_array($type, [ColumnType::CHAR, ColumnType::VARCHAR, ColumnType::TEXT, ColumnType::DATE, ColumnType::DATETIME, ColumnType::TIMESTAMP], TRUE)){
             return 'string';
         }
-        if(in_array($type, [ColumnType::INT, ColumnType::TINYINT, ColumnType::SMALLINT])){
+        if(in_array($type, [ColumnType::INT, ColumnType::TINYINT, ColumnType::SMALLINT], TRUE)){
             return 'int';
         }
-        if(in_array($type, [ColumnType::FLOAT, ColumnType::DOUBLE])){
+        if(in_array($type, [ColumnType::FLOAT, ColumnType::DOUBLE], TRUE)){
             return 'float';
         }
         throw new RuntimeException("$type is not in \AutoCode\DateBase\ColumnTyp");

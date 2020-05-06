@@ -1,12 +1,13 @@
 <?php
 
 
-namespace AutoCode\Thinkphp\BaseModule\Entity;
+namespace AutoCode\Thinkphp\BaseModule\Model;
 
 use AutoCode\AbstractGenerator;
 use AutoCode\AccessControlType;
 use AutoCode\DateBase\Table;
 use AutoCode\MethodConfig;
+use AutoCode\PhpFileGenerator;
 use AutoCode\PhpType;
 use AutoCode\Utility\FileSystem;
 use AutoCode\Utility\StringHelper;
@@ -17,22 +18,22 @@ use Nette\PhpGenerator\Parameter;
  * Class ModelEventGenerator
  * @package AutoCode\Thinkphp\BaseModule\Entity
  */
-class ModelEventGenerator extends AbstractGenerator
+class ModelEventGenerator extends AbstractGenerator implements PhpFileGenerator
 {
     /**
      * @var Table $table
      */
-    private Table $table;
+    private $table;
 
     /**
      * @var array $useList
      */
-    private array $useList = [];
+    private $useList = [];
 
     /**
      * @var array $specialEvent
      */
-    private array $specialEvent = [
+    private $specialEvent = [
         'before_write',
         'before_insert',
         'before_update',
@@ -45,7 +46,7 @@ class ModelEventGenerator extends AbstractGenerator
      */
      public function __construct(Table $table)
      {
-         parent::__construct($table->getNamespace(), $table->getTableName().'Event', $this->getUseList());
+         parent::__construct($table->getEntityNamespace(), $table->getTableName(), $this->getUseList());
          $this->setTable($table);
      }
 
@@ -84,7 +85,7 @@ class ModelEventGenerator extends AbstractGenerator
     /**
      * create event function
      */
-     public function createEvent(): void
+     public function create(): void
      {
         $table = $this->table;
         $namespace = $this->table->getEventNamespace();
@@ -94,22 +95,22 @@ class ModelEventGenerator extends AbstractGenerator
         ]);
         $path = $this->table->getEventPath();
         if(!$namespace || !$path){
-            throw new \Exception("[error]: createEventFunction path or namespace is null");
+            throw new \RuntimeException('[error]: createEventFunction path or namespace is null');
         }
         $event = $this->table->getEvent();
         foreach ($event as $v){
             $this->createEventMethod(ucfirst(StringHelper::camel($v)));
         }
-         FileSystem::createPhpFile($this->table->getEventPath(), StringHelper::camel(ucfirst($this->table->getTableName())).'Event', $this->dump());
+         FileSystem::createPhpFile($this->table->getEventPath(), StringHelper::camel(ucfirst($this->table->getTableName())), $this->dump());
      }
 
     /**
      * @param string $name
      * @throws \Exception
      */
-     public function createEventMethod(string $name):void
+     protected function createEventMethod(string $name):void
      {
-        $method = new MethodConfig($name);
+        $method = new MethodConfig(lcfirst($name));
         $method->setStatic();
         // 配置参数
         $param = new Parameter('col');
@@ -120,12 +121,12 @@ class ModelEventGenerator extends AbstractGenerator
             ' ',
             '@param mixed $col'
         ];
-        if(in_array(StringHelper::snake(lcfirst($name)), $this->specialEvent)){
+        if(in_array(StringHelper::snake(lcfirst($name)), $this->specialEvent, TRUE)){
             $comment[] = '@return boolean';
         }
         $method->setComment($comment);
         $bodyStr = '// do something when '.StringHelper::snake(lcfirst($name)).PHP_EOL;
-        if(in_array(StringHelper::snake(lcfirst($name)), $this->specialEvent)){
+        if(in_array(StringHelper::snake(lcfirst($name)), $this->specialEvent, TRUE)){
             $bodyStr .= 'return true;'.PHP_EOL;
             $method->setReturnType(PhpType::BOOLEAN);
         }

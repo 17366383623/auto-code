@@ -1,13 +1,14 @@
 <?php
 
 
-namespace AutoCode\Thinkphp\BaseModule\Entity;
+namespace AutoCode\Thinkphp\BaseModule\Model;
 
 use AutoCode\AbstractGenerator;
 use AutoCode\DateBase\Column;
 use AutoCode\DateBase\DataBase;
 use AutoCode\DateBase\Table;
 use AutoCode\MethodConfig;
+use AutoCode\PhpFileGenerator;
 use AutoCode\PhpType;
 use AutoCode\PropertyConfig;
 use AutoCode\AccessControlType;
@@ -21,17 +22,17 @@ use Nette\PhpGenerator\Type;
  * Class ModelGenerator
  * @package AutoCode\Thinkphp\BaseModule\Entity
  */
-class ModelGenerator extends AbstractGenerator
+class ModelGenerator extends AbstractGenerator implements PhpFileGenerator
 {
     /**
      * @var Table $table
      */
-    private Table $table;
+    private $table;
 
     /**
      * @var array
      */
-    private array $useList = [];
+    private $useList = [];
 
     /**
      * ModelGenerator constructor.
@@ -71,7 +72,7 @@ class ModelGenerator extends AbstractGenerator
     /**
      * create model file
      */
-    public function createModelFile(): void
+    public function create(): void
     {
         // 获取表对象
         $table = $this->table;
@@ -80,11 +81,6 @@ class ModelGenerator extends AbstractGenerator
             'class '.StringHelper::snake($table->getTableName()),
             '@package '.$table->getNamespace()
         ]);
-        // 创建元素
-        foreach ($table->getColumn() as $col){
-            // 创建属性
-            $this->createColumn($col);
-        }
         // 创建字段类型转换器
         $this->createColumnTypeProperty($table);
         // 设置自动时间戳
@@ -111,17 +107,18 @@ class ModelGenerator extends AbstractGenerator
     {
         $property = new PropertyConfig();
         $property->setComment([
-            '数据类型',
+            '数据类型转换',
             ' ',
-            '@var array '.$table->getTableName()
+            '@var array'
         ]);
         $typeArr = [];
-        foreach ($table as $col){
-            $typeArr[$col->getColumnName()] =  $col->getPhpType();
+        foreach ($table->getColumn() as $col){
+            $name = $col->getColumnName();
+            $typeArr[$name] = $col->getPhpType();
         }
-        $property->setType(Type::ARRAY);
         $property->setAccessControl(AccessControlType::PUBLIC);
         $property->setPropertyName('type');
+        $property->setValue($typeArr);
         $this->addProperty($property);
     }
 
@@ -186,9 +183,8 @@ class ModelGenerator extends AbstractGenerator
     {
         $property = new PropertyConfig();
         $property->setPropertyName($column->getColumnName());
-        $property->setComment([$column->getComment()]);
+        $property->setComment($column->getComment());
         $property->setAccessControl(\AutoCode\AccessControlType::PUBLIC);
-        $property->setType($column->getPhpType());
         if($column->getIsNullable()){
             $property->setNullable();
         }
@@ -212,9 +208,10 @@ class ModelGenerator extends AbstractGenerator
             ' ',
             '@return void'
         ]);
+        $method->setReturnType(PhpType::VOID);
         $bodyStr = '';
         foreach ($eventList as $v){
-            $bodyStr .= 'self::'.StringHelper::camel($eventList).'(\\'.$this->table->getEventNamespace().'\\'.StringHelper::camel($this->table->getTableName()).'Event::'.ucfirst(StringHelper::camel($eventList)).');'.PHP_EOL;
+            $bodyStr .= 'self::'.StringHelper::camel($v).'(\\'.$this->table->getEventNamespace().'\\'.ucfirst(StringHelper::camel($this->table->getTableName())).'::'.lcfirst(StringHelper::camel($v)).');'.PHP_EOL;
         }
         $method->setBody($bodyStr);
         $this->addMethod($method);

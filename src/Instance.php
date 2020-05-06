@@ -3,7 +3,10 @@
 
 namespace AutoCode;
 
-
+/**
+ * Trait Instance
+ * @package AutoCode
+ */
 trait Instance
 {
     /**
@@ -24,13 +27,13 @@ trait Instance
      */
     public static function getInstance():self
     {
-        if(self::$class!==null && self::$class instanceof self){
+        if(self::$class !== ''){
             return self::$class;
         }
         $class = new self();
         self::$class = $class;
         $methodArr = get_class_methods(__FUNCTION__);
-        if(in_array('init', $methodArr)){
+        if(in_array('init', $methodArr, TRUE)){
             self::init();
         }
     }

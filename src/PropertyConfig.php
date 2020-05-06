@@ -5,7 +5,6 @@ namespace AutoCode;
 
 
 use AutoCode\DateBase\ColumnType;
-use http\Exception\RuntimeException;
 use Nette\PhpGenerator\Type;
 
 class PropertyConfig
@@ -13,12 +12,12 @@ class PropertyConfig
     /**
      * @var string $accessControl
      */
-    private string $accessControl;
+    private $accessControl = 'public';
 
     /**
      * @var string $propertyName
      */
-    private string $propertyName;
+    private $propertyName;
 
     /**
      * @var mixed $value
@@ -28,30 +27,42 @@ class PropertyConfig
     /**
      * @var bool $isStatic
      */
-    private bool $isStatic = FALSE;
+    private $isStatic = FALSE;
 
     /**
      * @var bool $nullable
      */
-    private bool $nullable = FALSE;
+    private $nullable = FALSE;
 
     /**
      * @var string
      */
-    private string $type;
+    private $type = 'string';
 
     /**
      * @var array $comment
      */
-    private ?array $comment = [];
+    private $comment = [];
+
+
+    /**
+     * PropertyConfig constructor.
+     * @param string $name
+     */
+    public function __construct(string $name = '')
+    {
+        if((bool)$name){
+            $this->setPropertyName($name);
+        }
+    }
 
     /**
      * @param string $control
      */
     public function setAccessControl(string $control): void
     {
-        if(!in_array($control, [AccessControlType::PROTECTED, AccessControlType::PUBLIC, AccessControlType::PRIVATE])){
-            throw new RuntimeException("access control is error : {$control}");
+        if(!in_array($control, [AccessControlType::PROTECTED, AccessControlType::PUBLIC, AccessControlType::PRIVATE], TRUE)){
+            throw new \RuntimeException("access control is error : {$control}");
         }
         $this->accessControl = $control;
     }

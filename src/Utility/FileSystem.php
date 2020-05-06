@@ -34,7 +34,7 @@ class FileSystem
      */
     public static function createPhpFile(string $path, $fileName, $body): bool
     {
-        if(substr($fileName, 0, -4) !== '.php'){
+        if(strpos($fileName, '.php') !== 0){
             $fileName.='.php';
         }
         var_dump($fileName);

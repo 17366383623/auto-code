@@ -4,6 +4,7 @@
 namespace AutoCode\DateBase;
 
 
+use AutoCode\PhpType;
 use AutoCode\Utility\FileSystem;
 use http\Exception\RuntimeException;
 
@@ -12,57 +13,82 @@ class Table
     /**
      * @var array $columns
      */
-    private array $columns = [];
+    private $columns = [];
 
     /**
      * @var string $tableName
      */
-    private string $tableName;
+    private $tableName;
+
+    /**
+     * @var string $comment
+     */
+    private $comment = '';
 
     /**
      * @var string $namespace
      */
-    private string $namespace;
+    private $namespace;
 
     /**
      * @var string $path
      */
-    private string $path;
+    private $path;
 
     /**
      * @var string $autoWriteTimestamp
      */
-    private string $autoWriteTimestamp = '';
+    private $autoWriteTimestamp = '';
 
     /**
      * @var array $readonly
      */
-    private array $readonly = [];
+    private $readonly = [];
 
     /**
      * @var string $softDelete
      */
-    private string $softDelete = '';
+    private $softDelete = '';
 
     /**
      * @var int $cache
      */
-    private int $cache = 0;
+    private $cache = 0;
 
     /**
      * @var string $eventPath
      */
-    private string $eventPath = '';
+    private $eventPath = '';
 
     /**
      * @var string $eventNamespace
      */
-    private string $eventNamespace;
+    private $eventNamespace = '';
+
+    /**
+     * @var string
+     */
+    private $serviceNamespace = '';
+
+    /**
+     * @var string
+     */
+    private $servicePath = '';
+
+    /**
+     * @var string $entityNamespace
+     */
+    private $entityNamespace = '';
+
+    /**
+     * @var string $entityPath
+     */
+    private $entityPath = '';
 
     /**
      * @var array $event
      */
-    private array $event = [
+    private $event = [
         'before_insert',
         'after_insert',
         'before_update',
@@ -174,7 +200,6 @@ class Table
     }
 
     /**
-     * @param bool $filter
      * @return array
      */
     public function getEvent(): array
@@ -184,6 +209,7 @@ class Table
 
     /**
      * @param array $event
+     * @return void
      */
     public function setEvent(array $event): void
     {
@@ -223,7 +249,7 @@ class Table
     {
         foreach ($column as $v){
             if(!$v instanceof Column){
-                throw new RuntimeException("the current column is not instance of Column");
+                throw new RuntimeException('the current column is not instance of Column');
             }
         }
         $this->columns = $column;
@@ -308,5 +334,89 @@ class Table
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param string $service_namespace
+     */
+    public function setServiceNamespace(string $service_namespace): void
+    {
+        $this->serviceNamespace = $service_namespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServiceNamespace(): string
+    {
+        return $this->serviceNamespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServicePath(): string
+    {
+        return realpath($this->servicePath);
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setServicePath(string $path): void
+    {
+        $path = realpath($path);
+        if(!is_dir($path)){
+            throw new RuntimeException("{$path} is not dir");
+        }
+        $this->servicePath = $path;
+    }
+
+    /**
+     * @param string $entityNamespace
+     */
+    public function setEntityNamespace(string $entityNamespace): void
+    {
+        $this->entityNamespace = $entityNamespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityNamespace(): string
+    {
+        return $this->entityNamespace;
+    }
+
+    /**
+     * @param string $entityPath
+     */
+    public function setEntityPath(string $entityPath): void
+    {
+        $this->entityPath = $entityPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntityPath(): string
+    {
+        return $this->entityPath;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
     }
 }
