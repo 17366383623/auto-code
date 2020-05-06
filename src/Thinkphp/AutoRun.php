@@ -125,7 +125,7 @@ class AutoRun
     {
         $config = self::$config;
         // 设置根路径
-        if(substr($config['root_path'], 0, -1) !== '/'){
+        if(substr($config['root_path'], strlen($config['root_path'])-1, 1) !== '/'){
             $config['root_path'] .= '/';
         }
         if (!mkdir($concurrentDirectory = $config['root_path'].'Model') && !is_dir($concurrentDirectory)) {
@@ -165,8 +165,12 @@ class AutoRun
             $table->setEntityNamespace($config['root_namespace'].'\\Entity');
         }
         $table->setEvent($config['event']);
-        $table->setAutoWriteTimestamp($config['auto_timestamp']);
-        $table->setSoftDelete($config['soft_delete']);
+        if(!$table->getAutoWriteTimestamp()){
+            $table->setAutoWriteTimestamp($config['auto_timestamp']);
+        }
+        if(!$table->getSoftDelete()){
+            $table->setSoftDelete($config['soft_delete']);
+        }
         return $table;
     }
 }
