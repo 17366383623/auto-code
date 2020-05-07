@@ -67,6 +67,7 @@ class EntityGenerator extends AbstractGenerator implements PhpFileGenerator
     {
         $property = new PropertyConfig($col->getColumnName());
         $property->setAccessControl(AccessControlType::PRIVATE);
+        $property->setType($col->getPhpType());
         $property->setComment([
             'var '.$col->getPhpType(),
         ]);

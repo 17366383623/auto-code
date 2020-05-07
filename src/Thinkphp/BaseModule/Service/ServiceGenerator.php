@@ -3,7 +3,6 @@
 
 namespace AutoCode\Thinkphp\BaseModule\Service;
 
-
 use AutoCode\AccessControlType;
 use AutoCode\DateBase\Table;
 use AutoCode\MethodConfig;
@@ -27,6 +26,7 @@ class ServiceGenerator extends AbstractServiceGenerator implements PhpFileGenera
             '@param array $insertArr',
             '@return int'
         ]);
+        $method->setStatic();
         $method->setAccessControl(AccessControlType::PUBLIC);
         $method->setReturnType(PhpType::INTEGER);
         $param = new Parameter('insertArr');
@@ -59,6 +59,7 @@ class ServiceGenerator extends AbstractServiceGenerator implements PhpFileGenera
             '@param bool $isDel',
             '@return bool'
         ]);
+        $method->setStatic();
         $method->setAccessControl(AccessControlType::PUBLIC);
         $method->setReturnType(PhpType::BOOLEAN);
         $param = new Parameter('deleteArr');
@@ -90,6 +91,7 @@ class ServiceGenerator extends AbstractServiceGenerator implements PhpFileGenera
             '@param array @whereArr',
             '@return array'
         ]);
+        $method->setStatic();
         $method->setAccessControl(AccessControlType::PUBLIC);
         $method->setReturnType(PhpType::ARRAY);
         $param = new Parameter('editArr');
@@ -128,6 +130,7 @@ class ServiceGenerator extends AbstractServiceGenerator implements PhpFileGenera
             '@param array $whereArr',
             '@return array'
         ]);
+        $method->setStatic();
         $method->setAccessControl(AccessControlType::PUBLIC);
         $method->setReturnType(PhpType::ARRAY);
         $param = new Parameter('whereArr');
@@ -160,6 +163,7 @@ class ServiceGenerator extends AbstractServiceGenerator implements PhpFileGenera
             '@param array $whereArr',
             '@return bool'
         ]);
+        $method->setStatic();
         $method->setAccessControl(AccessControlType::PUBLIC);
         $method->setReturnType(PhpType::BOOLEAN);
         $param = new Parameter('whereArr');

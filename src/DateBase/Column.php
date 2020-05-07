@@ -29,6 +29,11 @@ class Column
    private $primary = false;
 
     /**
+     * @var bool $auto_increment
+     */
+   private $auto_increment = false;
+
+    /**
      * @var int $size
      */
     private $size = 50;
@@ -150,6 +155,7 @@ class Column
         return $this->primary;
     }
 
+
     /**
      * @param bool $primary
      */
@@ -192,5 +198,21 @@ class Column
     public function getComment(): array
     {
         return $this->comment;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoIncrement(): bool
+    {
+        return $this->auto_increment;
+    }
+
+    /**
+     * @param bool $auto_increment
+     */
+    public function setAutoIncrement(bool $auto_increment = TRUE): void
+    {
+        $this->auto_increment = $auto_increment;
     }
 }

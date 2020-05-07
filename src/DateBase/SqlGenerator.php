@@ -34,8 +34,8 @@ class SqlGenerator
         $tableName = $databaseName->getPrefix().lcfirst(StringHelper::snake($table->getTableName()));
         $primaryKey = [];
         $sqlStr = '';
-        $sqlStr .= "DROP TABLE IF EXISTS `{$databaseName->getName()}.{$tableName}`;".PHP_EOL;
-        $sqlStr .= "CREATE TABLE `{$databaseName->getName()}".'.'."{$tableName}` (".PHP_EOL;
+        $sqlStr .= "DROP TABLE IF EXISTS `{$tableName}`;".PHP_EOL;
+        $sqlStr .= "CREATE TABLE `{$tableName}` (".PHP_EOL;
         foreach ($table->getColumn() as $col){
             if($col->isPrimary()){
                 $primaryKey[] = "`{$col->getColumnName()}`";
@@ -43,6 +43,9 @@ class SqlGenerator
             $sqlStr .= "`{$col->getColumnName()}` {$col->getType()}({$col->getSize()}) ";
             if(!$col->getIsNullable()){
                 $sqlStr .= 'NOT NULL ';
+            }
+            if($col->isAutoIncrement()){
+                $sqlStr .= 'AUTO_INCREMENT ';
             }
             if($col->getDefaultValue() !== null){
                 if(is_string($col->getDefaultValue())){

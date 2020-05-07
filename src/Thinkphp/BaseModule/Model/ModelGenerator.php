@@ -118,6 +118,7 @@ class ModelGenerator extends AbstractGenerator implements PhpFileGenerator
         }
         $property->setAccessControl(AccessControlType::PUBLIC);
         $property->setPropertyName('type');
+        $property->setType(PhpType::ARRAY);
         $property->setValue($typeArr);
         $this->addProperty($property);
     }
