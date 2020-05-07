@@ -46,7 +46,7 @@ class ModelEventGenerator extends AbstractGenerator implements PhpFileGenerator
      */
      public function __construct(Table $table)
      {
-         parent::__construct($table->getEntityNamespace(), $table->getTableName(), $this->getUseList());
+         parent::__construct($table->getEntityNamespace(), ucfirst(StringHelper::camel($table->getTableName())), $this->getUseList());
          $this->setTable($table);
      }
 

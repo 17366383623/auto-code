@@ -128,7 +128,8 @@ class AutoRun
         if(substr($config['root_path'], strlen($config['root_path'])-1, 1) !== '/'){
             $config['root_path'] .= '/';
         }
-        if (!mkdir($concurrentDirectory = $config['root_path'].'Model') && !is_dir($concurrentDirectory)) {
+        $concurrentDirectory = $config['root_path'].'Model';
+        if(!is_dir($concurrentDirectory) && !mkdir($concurrentDirectory = $config['root_path'].'Model') && !is_dir($concurrentDirectory)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
         $table->setPath($concurrentDirectory.'/');
@@ -139,10 +140,12 @@ class AutoRun
         $table->setNamespace($config['root_namespace'].'\\Model');
         // 设置服务创建
         if(isset($config['create_base_service']) && (bool)$config['create_base_service']){
-            if (!mkdir($serviceDirectory = $config['root_path'].'Service') && !is_dir($serviceDirectory)) {
+            $serviceDirectory = $config['root_path'].'Service';
+            if (!is_dir($serviceDirectory) && !mkdir($serviceDirectory) && !is_dir($serviceDirectory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $serviceDirectory));
             }
-            if (!mkdir($concurrentDirectory = $serviceDirectory.'/'.ucfirst($table->getTableName())) && !is_dir($concurrentDirectory)) {
+            $concurrentDirectory = $serviceDirectory.'/'.ucfirst($table->getTableName());
+            if (!is_dir($concurrentDirectory) && !mkdir($concurrentDirectory) && !is_dir($concurrentDirectory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
             }
             $table->setServicePath($serviceDirectory.'/');
@@ -150,7 +153,8 @@ class AutoRun
         }
         // 设置模型事件创建
         if(isset($config['create_model_event']) && $config['create_model_event']){
-            if (!mkdir($eventDirectory = $config['root_path'].'Event') && !is_dir($eventDirectory)) {
+            $eventDirectory = $config['root_path'].'Event';
+            if (!is_dir($eventDirectory) && !mkdir($eventDirectory) && !is_dir($eventDirectory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $eventDirectory));
             }
             $table->setEventPath($eventDirectory.'/');
@@ -158,7 +162,8 @@ class AutoRun
         }
         // 设置实体创建
         if(isset($config['create_entity']) && $config['create_entity']){
-            if (!mkdir($entityDirectory = $config['root_path'].'Entity') && !is_dir($entityDirectory)) {
+            $entityDirectory = $config['root_path'].'Entity';
+            if (!is_dir($entityDirectory) && !mkdir($entityDirectory) && !is_dir($entityDirectory)) {
                 throw new \RuntimeException(sprintf('Directory "%s" was not created', $entityDirectory));
             }
             $table->setEntityPath($entityDirectory.'/');

@@ -8,6 +8,7 @@ use AutoCode\AbstractGenerator;
 use AutoCode\DateBase\Table;
 use AutoCode\PhpFileGenerator;
 use AutoCode\Utility\FileSystem;
+use AutoCode\Utility\StringHelper;
 
 abstract class AbstractServiceGenerator extends AbstractGenerator implements PhpFileGenerator
 {
@@ -29,7 +30,7 @@ abstract class AbstractServiceGenerator extends AbstractGenerator implements Php
     {
         $this->valid($table);
         $this->setTable($table);
-        parent::__construct($table->getServiceNamespace(), ucfirst($table->getTableName().'BaseService'), $this->useList);
+        parent::__construct($table->getServiceNamespace(), ucfirst(StringHelper::camel($table->getTableName()).'BaseService'), $this->useList);
     }
 
     /**

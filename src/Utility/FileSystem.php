@@ -22,7 +22,7 @@ class FileSystem
         if(!is_dir($real_path)){
             throw new RuntimeException("{$real_path} is not a dir path");
         }
-        return (bool)file_put_contents($path.'/'.ucfirst($fileName), $body);
+        return (bool)file_put_contents($path.'/'.ucfirst(StringHelper::camel($fileName)), $body);
     }
 
 

@@ -31,7 +31,7 @@ class EntityGenerator extends AbstractGenerator implements PhpFileGenerator
     public function __construct(Table $table)
     {
         $this->setTable($table);
-        parent::__construct($table->getEntityNamespace(), $table->getTableName());
+        parent::__construct($table->getEntityNamespace(), ucfirst(StringHelper::camel($table->getTableName())));
     }
 
     /**

@@ -108,7 +108,7 @@ class ServiceGenerator extends AbstractServiceGenerator implements PhpFileGenera
         $bodyStr .= '}'.PHP_EOL;
         $bodyStr .= '$model = new \\'.$table->getNamespace().'\\'.ucfirst($table->getTableName()).'();'.PHP_EOL;
         $bodyStr .= '$model->save($editArr, $whereArr);'.PHP_EOL;
-        $bodyStr .= 'return $model;';
+        $bodyStr .= 'return $model->toArray();';
         $method->setBody($bodyStr);
         $this->addMethod($method);
     }

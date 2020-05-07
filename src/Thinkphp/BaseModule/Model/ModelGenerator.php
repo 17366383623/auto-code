@@ -40,7 +40,7 @@ class ModelGenerator extends AbstractGenerator implements PhpFileGenerator
      */
     public function __construct(Table $table)
     {
-        parent::__construct($table->getNamespace(), $table->getTableName(), $this->getUseList());
+        parent::__construct($table->getNamespace(), ucfirst(StringHelper::camel($table->getTableName())), $this->getUseList());
         $this->addExtend('think\Model');
         $this->setTable($table);
     }
