@@ -102,14 +102,10 @@ class Table
     /**
      * Table constructor.
      * @param string $name
-     * @param string $namespace
-     * @param string $path
      */
-    public function __construct(string $name, string $namespace, string $path)
+    public function __construct(string $name)
     {
         $this->setTableName($name);
-        $this->setNamespace($namespace);
-        $this->setPath($path);
     }
 
     /**
