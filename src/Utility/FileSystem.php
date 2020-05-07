@@ -37,7 +37,6 @@ class FileSystem
         if(strpos($fileName, '.php') !== 0){
             $fileName.='.php';
         }
-        var_dump($fileName);
         return self::createFile($path, $fileName, $body);
     }
 }
