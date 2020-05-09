@@ -8,6 +8,7 @@ use AutoCode\DateBase\Column;
 use AutoCode\DateBase\Table;
 use AutoCode\MethodConfig;
 use AutoCode\PhpFileGenerator;
+use AutoCode\PhpType;
 use AutoCode\PropertyConfig;
 use AutoCode\Utility\FileSystem;
 use AutoCode\Utility\StringHelper;
@@ -39,6 +40,7 @@ class EntityGenerator extends AbstractGenerator implements PhpFileGenerator
      */
     public function create(): void
     {
+        $this->setExtend(['\\AutoCode\\Thinkphp\\BaseModule\\Entity\\AbstractEntity']);
         $table = $this->table;
         if((bool)$table->getEntityPath() && (bool)$table->getEntityNamespace()){
             $this->createEntity($this->getTable());
@@ -89,9 +91,10 @@ class EntityGenerator extends AbstractGenerator implements PhpFileGenerator
      */
     public function createGetMethod(Column $col): void
     {
-        $method = new MethodConfig('get'.ucfirst(StringHelper::camel($col->getColumnName())));
+        $actionPrefix = $col->getPhpType()===PhpType::BOOLEAN?'is':'get';
+        $method = new MethodConfig($actionPrefix.ucfirst(StringHelper::camel($col->getColumnName())));
         $method->setComment([
-            'get '.$col->getColumnName(),
+            $actionPrefix.' '.$col->getColumnName(),
             ' ',
             '@return '.$col->getPhpType()
         ]);

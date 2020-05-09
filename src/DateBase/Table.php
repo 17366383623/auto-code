@@ -142,7 +142,9 @@ class Table
             return;
         }
         $eventPath = realpath($eventPath);
-        if(!is_dir($eventPath))throw new RuntimeException("{$eventPath} is not dir path");
+        if(!is_dir($eventPath)) {
+            throw new RuntimeException("{$eventPath} is not dir path");
+        }
         $this->eventPath = $eventPath;
     }
 
@@ -175,7 +177,9 @@ class Table
      */
     public function setNamespace(string $namespace): void
     {
-        if(!$namespace)throw new RuntimeException("{$namespace} is null");
+        if(!$namespace) {
+            throw new RuntimeException("{$namespace} is null");
+        }
         $this->namespace = $namespace;
     }
 
