@@ -24,6 +24,8 @@ class ColumnType
 
     public const DATE = 'DATE';
 
+    public const DECIMAL = 'DECIMAL';
+
     public const DATETIME = 'DATETIME';
 
     public const TIMESTAMP = 'TIMESTAMP';

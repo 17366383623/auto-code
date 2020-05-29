@@ -89,7 +89,7 @@ class DataBase
     {
         foreach ($tables as $v){
             if($v instanceof Table){
-                throw new RuntimeException("the current table is not instance of Table");
+                throw new RuntimeException('the current table is not instance of Table');
             }
         }
         $this->tables = $tables;

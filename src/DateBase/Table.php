@@ -38,7 +38,10 @@ class Table
     /**
      * @var string $autoWriteTimestamp
      */
-    private $autoWriteTimestamp = '';
+    private $autoWriteTimestamp = [
+        'create' => 'create_at',
+        'update' => 'update_at'
+    ];
 
     /**
      * @var array $readonly
@@ -48,7 +51,7 @@ class Table
     /**
      * @var string $softDelete
      */
-    private $softDelete = '';
+    private $softDelete = 'delete_at';
 
     /**
      * @var int $cache
@@ -106,6 +109,8 @@ class Table
     public function __construct(string $name)
     {
         $this->setTableName($name);
+        // 设置默认备注
+        $this->setComment($name);
     }
 
     /**
@@ -258,15 +263,15 @@ class Table
     /**
      * getAutoWriteTimestamp
      */
-    public function getAutoWriteTimestamp(): string
+    public function getAutoWriteTimestamp(): array
     {
         return $this->autoWriteTimestamp;
     }
 
     /**
-     * @param string $autoWriteTimestamp
+     * @param array $autoWriteTimestamp
      */
-    public function setAutoWriteTimestamp(string $autoWriteTimestamp): void
+    public function setAutoWriteTimestamp(array $autoWriteTimestamp): void
     {
         $this->autoWriteTimestamp = $autoWriteTimestamp;
     }

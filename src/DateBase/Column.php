@@ -16,12 +16,12 @@ class Column
     /**
      * @var string $type
      */
-    private $type;
+    private $type = 'varchar';
 
     /**
      * @var string $phpType
      */
-    private $phpType;
+    private $phpType = 'string';
 
    /**
     * @var bool $primary
@@ -34,9 +34,9 @@ class Column
    private $auto_increment = false;
 
     /**
-     * @var int $size
+     * @var string $size
      */
-    private $size = 50;
+    private $size = '30';
 
     /**
      * @var bool $isNullable
@@ -65,6 +65,8 @@ class Column
         $this->setColumnName($name);
         $this->setPhpType($phpType);
         $this->setType($type);
+        // 设置默认注释
+        $this->setComment($name);
     }
 
     /**
@@ -100,17 +102,17 @@ class Column
     }
 
     /**
-     * @param int $size
+     * @param string $size
      */
-    public function setSize(int $size): void
+    public function setSize(string $size): void
     {
         $this->size = $size;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getSize(): int
+    public function getSize(): string
     {
         return $this->size;
     }
