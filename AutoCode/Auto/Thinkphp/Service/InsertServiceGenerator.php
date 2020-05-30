@@ -35,23 +35,9 @@ class InsertServiceGenerator extends ServiceGenerator
      */
     private function createMethod(Table $table): MethodGeneric
     {
-        $pk = '';
-        // 获取主键
-        foreach ($table->getPropertyGeneric() as $property) {
-            if ($property->getSqlColumn()->isPrimary()) {
-                $pk = lcfirst(StringHelper::snake($property->getSqlColumn()->getName()));
-                break;
-            }
-        }
-        if (!$pk) {
-            throw new \RuntimeException("{$table->getName()}'s pk is null");
-        }
+        $pk = $this->getPk($table);
         $name            = $this->getName($table);
         $methodContainer = new MethodGeneric();
-        $method          = new Method('handle');
-        $method->setIsStatic();
-        $method->setComment('插入数据');
-        $method->setReturnType(PhpType::__INTEGER__);
         // 参数一
         $param = new Parameter("{$name}Arr");
         $param->setType(PhpType::__ARRAY__);
@@ -62,7 +48,6 @@ class InsertServiceGenerator extends ServiceGenerator
         $paramGeneric = new ParamGeneric();
         $paramGeneric->push($param);
         $paramGeneric->push($insertField);
-        $method->setParamGeneric($paramGeneric);
         $content = '';
         $content .= 'if (!(bool)$'.$name.'Arr) {'.PHP_EOL;
         $content .= '  throw new \RuntimeException(\'insert array is null\');'.PHP_EOL;
@@ -73,7 +58,7 @@ class InsertServiceGenerator extends ServiceGenerator
         $content .= '  $'.$name.' = \\'.$table->getRootNamespace().'\\Model\\'.ucfirst(StringHelper::camel($table->getName())).'::create($'.$name.'Arr);'.PHP_EOL;
         $content .= '}'.PHP_EOL;
         $content .= 'return (int)$'.$name.'->'.$pk.';';
-        $method->setContent($content);
+        $method = $this->handleMethod($paramGeneric, '插入数据', $content, PhpType::__INTEGER__);
         $methodContainer->push($method);
         return $methodContainer;
     }

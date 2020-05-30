@@ -29,7 +29,7 @@ class AutoRun
      * @param DataBase $database
      * @param bool $createSql
      */
-    public function __construct(DataBase $database, bool $createSql = false)
+    public function __construct(DataBase $database, bool $createSql = FALSE)
     {
         $this->setDatabase($database);
         $this->run();

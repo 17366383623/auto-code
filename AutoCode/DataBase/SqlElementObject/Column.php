@@ -57,12 +57,14 @@ class Column
      * @param string $name
      * @param string $type
      * @param string $size
+     * @param string $comment
      */
-    public function __construct(string $name, string $type = SqlTypeEnum::__VARCHAR__, string $size = '30')
+    public function __construct(string $name, string $type = SqlTypeEnum::__VARCHAR__, string $size = '30', string $comment = '')
     {
         $this->setName($name);
         $this->setType($type);
         $this->setSize($size);
+        $this->setComment($comment);
     }
 
     /**
@@ -76,7 +78,7 @@ class Column
     /**
      * @param bool $auto_increment
      */
-    public function setAutoIncrement(bool $auto_increment): void
+    public function setAutoIncrement(bool $auto_increment = true): void
     {
         $this->auto_increment = $auto_increment;
     }

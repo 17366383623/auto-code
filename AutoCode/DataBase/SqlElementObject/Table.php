@@ -3,7 +3,7 @@
 namespace AutoCode\DataBase\SqlElementObject;
 
 use AutoCode\Auto\Utility\Generic\PropertyGeneric;
-use AutoCode\Utility\StringHelper;
+use AutoCode\Common\StringHelper;
 
 /**
  * 数据表对象

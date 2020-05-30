@@ -4,10 +4,14 @@
 namespace AutoCode\Auto\Thinkphp;
 
 use AutoCode\Auto\Utility\AbstractGenerator;
+use AutoCode\Auto\Utility\Enum\PhpType;
 use AutoCode\Auto\Utility\Generic\MethodGeneric;
+use AutoCode\Auto\Utility\Generic\ParamGeneric;
 use AutoCode\Auto\Utility\Generic\PropertyGeneric;
+use AutoCode\Auto\Utility\Method;
 use AutoCode\DataBase\SqlElementObject\Table;
 use AutoCode\Common\StringHelper;
+use Nette\PhpGenerator\Parameter;
 
 /**
  * 服务生成器
@@ -81,5 +85,45 @@ abstract class ServiceGenerator extends AbstractGenerator
     protected function getName(Table $table): string
     {
         return lcfirst(StringHelper::camel($table->getName()));
+    }
+
+    /**
+     * 获取主键
+     * @param Table $table
+     * @return string
+     */
+    protected function getPk(Table $table): string
+    {
+        $pk = '';
+        // 获取主键
+        foreach ($table->getPropertyGeneric() as $property) {
+            if ($property->getSqlColumn()->isPrimary()) {
+                $pk = lcfirst(StringHelper::snake($property->getSqlColumn()->getName()));
+                break;
+            }
+        }
+        if (!$pk) {
+            throw new \RuntimeException("{$table->getName()}'s pk is null");
+        }
+        return $pk;
+    }
+
+    /**
+     * 创建handle方法
+     * @param ParamGeneric $params
+     * @param string $comment
+     * @param string $content
+     * @param string $returnType
+     * @return Method
+     */
+    protected function handleMethod(ParamGeneric $params, string $comment, string $content, string $returnType): Method
+    {
+        $method          = new Method('handle');
+        $method->setIsStatic();
+        $method->setComment($comment);
+        $method->setReturnType($returnType);
+        $method->setParamGeneric($params);
+        $method->setContent($content);
+        return $method;
     }
 }

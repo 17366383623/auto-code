@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "AutoCode\\" : "AutoCode/",
+            "AutoCode\\": "AutoCode/",
+            "FileSystem\\": "FileSystem/",
             "Test\\": "test/"
         }
     }
